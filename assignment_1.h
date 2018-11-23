@@ -280,10 +280,7 @@ bool isAssigned(char *str)
             
             // check for all floats
             if ((int) val[pos] < 48 || (int) val[pos] > 57)
-            {
-                printf("Biting the dust here with char %c at pos. %d and ASCII %d\n", val[pos], pos, val[pos]);
                 return false;
-            }
         }
     }
 
