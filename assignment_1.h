@@ -346,3 +346,23 @@ void tokenize(char *str)
         printf("%c", str[pos]);
     }
 }
+
+// Q10: Take a string as input and delete all the extra spaces
+void trim(char *str)
+{
+    char trimmed[100];
+    int pos = -1;
+    int tPos = -1;
+
+    while(str[++pos])
+    {
+        if ((int)str[pos] == 32 && (int)str[pos+1] == 32)
+            continue;
+        trimmed[++tPos] = str[pos];
+    }
+    trimmed[++tPos] = '\0';
+    puts(trimmed);
+
+    str = trimmed;
+    // return str;
+}

@@ -96,5 +96,11 @@ int main()
     char *str = "inta=10;";
     tokenize(str);
 
+    printf("\n");
+
+    // TEST: trim
+    str = "int      var      =         5   ;";
+    trim(str);
+
     return 0;
 }
