@@ -101,6 +101,39 @@ void printAllWords(char *str)
     }
 }
 
+// Q5: Check whether a word is present in a string or not
+bool present(char *word, char *str)
+{
+    char *temp = allo;
+    int pos, tPos;
+
+    pos = tPos = -1;
+    while(str[++pos])
+    {
+        // when you reach the end
+        if (str[pos+1] == '\0')
+        {
+            temp[++tPos] = str[pos];
+            temp[++tPos] = '\0';
+            if (! strcmp(temp, word))
+                return true;
+            return false;
+        }
+
+        // when you are anywhere but the end
+        if ((int) str[pos] == 32)
+        {
+            temp[++tPos] = '\0';
+            if (! strcmp(temp, word))
+                return true;
+            temp = allo;
+            tPos = -1;
+            continue;
+        }
+        temp[++tPos] = str[pos];
+    }
+}
+
 // Q6: Identify if a string is a keyword or not
 bool isKeyword(char *str)
 {

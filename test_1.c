@@ -45,6 +45,18 @@ int main()
 
     printf("\n");
 
+    // TEST: present
+    char word[100];
+    printf("Enter string: ");
+    gets(test);
+    printf("Enter word: ");
+    gets(word);
+    present(word, test)
+        ? printf("Present\n")
+        : printf("Absent\n");
+    
+    printf("\n");
+
     // TEST: isKeyword
     printf("Enter a string: ");
     gets(test);
