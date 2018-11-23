@@ -45,7 +45,7 @@ int main()
 
     printf("\n");
 
-    // TEST: printAllWords
+    // TEST: isKeyword
     printf("Enter a string: ");
     gets(test);
     isKeyword(test)
