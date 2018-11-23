@@ -90,5 +90,11 @@ int main()
             : printf("%s is incorrectly assigned\n", idens2[i]);
     }
 
+    printf("\n");
+
+    // TEST: tokenize
+    char *str = "inta=10;";
+    tokenize(str);
+
     return 0;
 }

@@ -293,3 +293,56 @@ bool isAssigned(char *str)
 
     return true;
 }
+
+/* Q9: Break a string into type, identifier, operator and value.
+    Example: 
+        Input: inta=10 (no spaces)
+        Output:
+        int
+        a
+        =
+        10
+        ;
+*/
+bool in(char *str, char *list[], int listSize)
+{
+    // Return true if str is in list of size listSize
+    // Return false otherwise
+    int i;
+    for (i = 0; i < listSize; i++)
+    {
+        if (! strcmp(str, list[i]))
+            return true;
+    }
+    return false;
+}
+void tokenize(char *str)
+{
+    char *types[] = {"short", "int", "long", "float", "double"};
+    char type[10];
+    int pos = -1;
+
+    // get the datatype, and print it
+    while(str[++pos])
+    {
+        type[pos] = str[pos];
+        type[pos+1] = '\0';
+        if (in(type, types, 5))
+            break;
+    }
+    puts(type);
+
+    // print the variable name now
+    while(str[++pos])
+    {
+        if (str[pos] == '=' || str[pos] == '+' || str[pos] == '-' || 
+            str[pos] == '*' || str[pos] == '/' || str[pos] == ';')
+        {
+            printf("\n");
+            printf("%c", str[pos]);
+            printf("\n");
+            continue;
+        }
+        printf("%c", str[pos]);
+    }
+}
