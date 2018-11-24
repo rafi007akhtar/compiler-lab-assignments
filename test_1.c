@@ -45,14 +45,15 @@ int main()
 
     printf("\n");
 
-    // TEST: present
+    // TEST: whereSubstring
     char word[100];
     printf("Enter string: ");
     gets(test);
     printf("Enter word: ");
     gets(word);
-    present(word, test)
-        ? printf("Present\n")
+    int pos = whereSubstring(word, test);
+    (pos != -1)
+        ? printf("Present at position %d\n", pos)
         : printf("Absent\n");
     
     printf("\n");

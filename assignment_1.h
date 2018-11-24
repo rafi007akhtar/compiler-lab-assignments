@@ -101,9 +101,12 @@ void printAllWords(char *str)
     }
 }
 
-// Q5: Check whether a word is present in a string or not
-bool present(char *word, char *str)
+// Q5: Check whether a word is present in a string or not, and at which position if present
+int whereSubstring(char *word, char *str)
 {
+    // Return the position in str where word is present
+    // Return -1 if not present
+
     char *temp = allo;
     int pos, tPos;
 
@@ -116,8 +119,8 @@ bool present(char *word, char *str)
             temp[++tPos] = str[pos];
             temp[++tPos] = '\0';
             if (! strcmp(temp, word))
-                return true;
-            return false;
+                return pos-tPos;
+            return -1;
         }
 
         // when you are anywhere but the end
@@ -125,7 +128,7 @@ bool present(char *word, char *str)
         {
             temp[++tPos] = '\0';
             if (! strcmp(temp, word))
-                return true;
+                return pos-tPos;
             temp = allo;
             tPos = -1;
             continue;
