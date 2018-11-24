@@ -160,6 +160,25 @@ bool isKeyword(char *str)
     }
     return false;
 }
+void printKeywords(char *str)
+{
+    int pos = -1;
+    char *word = allo;
+    int spaceInd = 0;
+    while(str[++pos])
+    {
+        if ((int) str[pos] == 32 || str[pos+1] == '\0')
+        {
+            memcpy(word, &str[spaceInd], pos-spaceInd);
+            word[pos-spaceInd] = '\0';
+            spaceInd = pos+1;
+
+            if (isKeyword(word)) printf("%s \n", word);
+            free(word);
+            word = allo;
+        }
+    }
+}
 
 // Q7: Recognize all identifiers in a string
 

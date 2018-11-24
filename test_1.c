@@ -58,12 +58,10 @@ int main()
     
     printf("\n");
 
-    // TEST: isKeyword
+    // TEST: printKeywords
     printf("Enter a string: ");
     gets(test);
-    isKeyword(test)
-        ? printf("%s is a keyword\n", test)
-        : printf("%s is not a keyword\n", test);
+    printKeywords(test);
 
     printf("\n");
 
