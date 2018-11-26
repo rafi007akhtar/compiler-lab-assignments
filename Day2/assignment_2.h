@@ -1,4 +1,6 @@
 /** The following assignments were given on Day 2. */
+#include <stdlib.h>
+#define allo (char *) malloc(sizeof(char)*100)
 
 typedef enum boolean {false, true} bool; // created my own bool datatype
 
@@ -28,6 +30,45 @@ void strcat(char *str1, char *str2)
         str1[n1++] = str2[n2++];
     str2[n2] = '\0';
 }
+
+// Q3: Input a string and write a C program to find if another string is present in it. 
+//     If present, print the starting and ending position where the sub-string exists. 
+int whereSubstring(char *word, char *str)
+{
+    // Return the position in str where word is present
+    // Return -1 if not present
+
+    char *temp = allo;
+    int pos, tPos;
+
+    pos = tPos = -1;
+    while(str[++pos])
+    {
+        // when you reach the end
+        if (str[pos+1] == '\0')
+        {
+            temp[++tPos] = str[pos];
+            temp[++tPos] = '\0';
+            if (! strcmp(temp, word))
+                return pos-tPos;
+            return -1;
+        }
+
+        // when you are anywhere but the end
+        if ((int) str[pos] == 32)
+        {
+            temp[++tPos] = '\0';
+            if (! strcmp(temp, word))
+                return pos-tPos;
+            free(temp);
+            temp = allo;
+            tPos = -1;
+            continue;
+        }
+        temp[++tPos] = str[pos];
+    }
+}
+
 
 // Q4: Write a program to recognize constants.
 bool isConst(char *str)

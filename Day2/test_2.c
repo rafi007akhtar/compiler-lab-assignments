@@ -5,6 +5,8 @@
 
 int main(void)
 {
+    int i, ind; 
+
     // TEST: strcpy
     char str1[] = "hello";
     puts(str1);
@@ -23,9 +25,21 @@ int main(void)
 
     printf("\n");
 
+    // TEST: whereSubstring
+    char *got[] = {"winter", "is", "coming", "roar"};
+    char *quote = "winter is coming";
+    for (i = 0; i < 4; i++)
+    {
+        ind = whereSubstring(got[i], quote);
+        (ind == -1) 
+            ? printf("%s not present in %s\n", got[i], quote, ind)
+            : printf("%s present in %s at position %d\n", got[i], quote, ind);
+    }
+
+    printf("\n");
+
     // TEST: isConst
     char *lit_test[] = {"012", "+123", "45", "-23", "3.1416", "1.2.3", "hello, world", "1+2", "4-5"};
-    int i;
     for (i = 0; i < 9; i++)
     {
         isConst(lit_test[i]) 
