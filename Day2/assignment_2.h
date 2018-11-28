@@ -137,6 +137,55 @@ bool isComment(char *line)
     return false;
 }
 
+// Q7: Design a lexical analyzer for given language and the lexical analyzer should ignore redundant spaces, tabs and new lines.
+//      It should also ignore comments. 
+//      Although the syntax specification states that identifiers can be arbitrarily long, 
+//      you may restrict the length to some reasonable value. 
+//      Simulate the same in C language.
+void analyzer(char* str)
+{
+    int pos = -1;
+    int i;
+
+    // first, uncomment the code (considering only /**/ comments)
+    char uncommented[100];
+    bool flag = true; // copy only when flag's set
+    i = 0;
+    while(str[++pos])
+    {
+        if (str[pos] == '/' && str[pos+1] == '*')
+            flag = false;
+        if (pos > 0 && str[pos] == '/' && str[pos-1] == '*' && flag == false)
+        {
+            flag = true;
+            continue;
+        }
+        
+        if (flag == true)
+            uncommented[i++] = str[pos];
+    }
+    uncommented[i] = '\0';
+
+    // now, remove the white spaces
+    char trimmed[i+1];
+    i = 0;
+    pos = -1;
+    while(uncommented[++pos])
+    {
+        if (! (
+            uncommented[pos] == '\t' || uncommented[pos] == '\n' || (str[pos] == ' ' && uncommented[pos+1] == ' ')
+            )
+        )
+        
+        trimmed[i++] = uncommented[pos];
+    }
+    trimmed[i] = '\0';
+
+    printf(trimmed);
+}
+
+
+
 // Q8: Write a C program which can recognize whether an email address is valid or not.
 bool isEmail(char* email)
 {

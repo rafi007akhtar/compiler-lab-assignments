@@ -66,6 +66,15 @@ int main(void)
 
     printf("\n");
 
+    // TEST: analyzer
+    char *command = "int a = 5; \tint b = 10;      /*now return the sum*/  \nreturn a+b;";
+    printf("Unanalyzed program: %s\n", command);
+    printf("Analyzed text: ");
+    analyzer(command);
+    printf("\n");
+
+    printf("\n");
+
     // TEST: isEmail
     char *emails[] = {
         "alimdrafi@gmail.com",
