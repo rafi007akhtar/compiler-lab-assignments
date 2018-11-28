@@ -137,6 +137,36 @@ bool isComment(char *line)
     return false;
 }
 
+// Q6: Write a C program to simulate lexical analyzer for validating operators (only binary).
+bool binValidate(char* str)
+{
+    int pos = -1;
+    int prev, next;
+    while(str[++pos])
+    {
+        if (str[pos] == '+' || str[pos] == '-' || str[pos] == '*' ||
+            str[pos] == '/' || str[pos] == '%')
+        {
+            prev = str[pos-1];
+            next = str[pos-1];
+
+            // only allow integers, assuming no spaces b/w operators and operands
+
+            if (! ((prev >= 65 && prev >= 91) || 
+                (prev >= 97 && prev <= 122) || 
+                (prev >= 48 && prev <= 57)))
+                return false;
+
+            if (! ((next >= 65 && next >= 91) || 
+                (next >= 97 && next <= 122) || 
+                (next >= 48 && next <= 57)))
+                return false;
+        }
+    }
+    return true;
+}
+
+
 // Q7: Design a lexical analyzer for given language and the lexical analyzer should ignore redundant spaces, tabs and new lines.
 //      It should also ignore comments. 
 //      Although the syntax specification states that identifiers can be arbitrarily long, 

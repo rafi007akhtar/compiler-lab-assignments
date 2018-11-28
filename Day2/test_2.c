@@ -66,6 +66,23 @@ int main(void)
 
     printf("\n");
 
+    // TEST: binValidate
+    char *operations[] = {
+        "int x=2+5;",
+        "int p=a+b;",
+        "int f='a'+5;",
+        "int g='6'+b;",
+        "int h='a'+'b';"
+    };
+    for (i = 0; i < 5; i++)
+    {
+        binValidate(operations[i])
+            ? printf("%s is valid\n", operations[i])
+            : printf("%s is invalid\n", operations[i]);
+    }
+
+    printf("\n");
+
     // TEST: analyzer
     char *command = "int a = 5; \tint b = 10;      /*now return the sum*/  \nreturn a+b;";
     printf("Unanalyzed program: %s\n", command);
