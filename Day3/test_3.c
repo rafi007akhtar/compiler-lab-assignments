@@ -5,7 +5,14 @@ int main(void)
 {
     int i;
 
-    checkPrerequisites("hello-world.c");
+    // TEST: checkPrerequisites
+    char *test_cases_1[] = {"incorrect.c", "hello-world.c"};
+    for (i = 0; i < 2; i++)
+        checkPrerequisites(test_cases_1[i])
+            ? printf("Program %s has prerequisites\n", test_cases_1[i])
+            : printf("Program %s does not have prerequisites\n", test_cases_1[i]);
+
+    printf("\n");
 
     // TEST: calToMal
     char *test_cases_2[] = {

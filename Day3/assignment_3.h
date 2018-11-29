@@ -41,51 +41,59 @@ bool checkPrerequisites(char *filename)
         if (result == -1)
             break;
         
+        // check header
         if (line[0] == '#')
         {
-            // check header
-            if (!strcmp("#include<stdio.h>", removeSpaces(line)))
+            if (!strcmp("#include<stdio.h>\n", removeSpaces(line)))
             {
                 checkHeader = true;
                 continue;
             }
         }
 
-        if (! (strcmp("int main()", line) || 
-               strcmp("int main(void)", line) ||
-               strcmp("int main(int argc, char *argv[]", line))
+        // check main
+        if (! strcmp("int main()\n", line) || 
+            ! strcmp("int main(void)\n", line) ||
+            ! strcmp("int main(int argc, char *argv[])\n", line)
             )
         {
             checkMain = true;
             continue;
         }
 
-        if (!strcmp("{", line) && checkMain == true)
+        // check open brace
+        if (!strcmp("{\n", line) && checkMain == true)
         {
             openBrace = true;
             continue;
         }
         
-        if (!strcmp("}", line) && openBrace == true)
+        // check close brace
+        if (!strcmp("}\n", line) && openBrace == true)
         {
             closeBrace = true;
             continue;
         }
 
-        if (!strcmp("return 0;", line) || !strcmp("return (0);", line))
+        // check return
+        if (checkReturn == false)
         {
-            checkReturn = true;
-            continue;
+            if (
+                (!strcmp("return0;\n", removeSpaces(line)) &&
+                strcmp("return0;\n", line)) ||
+                (!strcmp("return(0);\n", removeSpaces(line)) &&
+                strcmp("return(0);\n", line))
+            )
+                checkReturn = true;
+                continue;
         }
 
+        // if already encountered all these, don't check anymore
         if (checkMain && checkReturn && openBrace && closeBrace && checkHeader)
             return true;
-
     }
 
     fclose(f);
-
-    if (checkHeader == true) printf("IO Header's here!\n");
 
     return (checkHeader && checkMain && openBrace && closeBrace && checkReturn);
 
