@@ -5,6 +5,8 @@ int main(void)
 {
     int i;
 
+    checkPrerequisites("hello-world.c");
+
     // TEST: calToMal
     char *test_cases_2[] = {
         "calloc(5,sizeof(float))",
