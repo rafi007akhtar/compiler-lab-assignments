@@ -48,5 +48,13 @@ int main(void)
             : printf("%s does not have Monday\n", test_cases_6[i]);
     }
 
+    printf("\n");
+
+    // TEST: initialize
+    initialize("initialize.c");
+    printf("Variables in file initialize.c have been initialized\n");
+
+    printf("\n");
+
     return 0;
 }

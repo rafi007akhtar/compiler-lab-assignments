@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #define allo (char *) malloc(sizeof(char) * 100)
 
@@ -231,7 +232,11 @@ bool hasMonday(char *str)
             temp[++tPos] = str[pos];
             temp[++tPos] = '\0';
             if (! strcmp(temp, word))
+            {
+                free(temp);
                 return true;
+            }
+            free(temp);
             return false;
         }
 
@@ -248,6 +253,83 @@ bool hasMonday(char *str)
         }
         temp[++tPos] = str[pos];
     }
+}
+
+// Q7: Write a C program that will check whether all the variables declared in an input file are initialized or not. 
+//     If not, initialize them with 0.
+void initialize(char *filename)
+{
+    char *line;
+    int result;
+    size_t len = 0;
+    int pos;
+
+    FILE *f = fopen(filename, "r");
+
+    char *assinged;
+    bool isAssigned;
+
+    // copy the results to an intermediate temp file
+    FILE *temp = fopen("temp.c", "w+");
+    fclose(temp);
+    while(1)
+    {
+        result = getline(&line, &len, f);
+        if (result == -1) break;
+
+        pos = -1;
+        isAssigned = false;
+
+        while(line[++pos])
+        {
+            if (line[pos] == '=')
+            {
+                isAssigned = true;
+                break;
+            }
+        }
+
+        
+        if (! isAssigned)
+        {
+            temp = fopen("temp.c", "a+");
+            assinged = allo;
+
+            len = strlen(line);
+            memcpy(assinged, &line[0], len-2);
+            assinged[len-2] = '=';
+            assinged[len-1] = '0';
+            assinged[len] = ';';
+            assinged[len+1] = '\n';
+            assinged[len+2] = '\0';
+
+            fprintf(temp, "%s", assinged);
+            free(assinged);
+            fclose(temp);
+        }
+        else 
+        {
+            temp = fopen("temp.c", "a+");
+            fprintf(temp, "%s", line);
+            fclose(temp);
+        }
+    }
+    fclose(f);
+
+    // now copy the results of temp to the program file freshened-up
+    f = fopen(filename, "w+"); // clear its contents
+    temp = fopen("temp.c", "r"); // copy this file's contents
+    while(1)
+    {
+        result = getline(&line, &len, temp);
+        if (result == -1) break;
+        fprintf(f, "%s", line);
+    }
+    fclose(f);
+    fclose(temp);
+
+    // now delete temp
+    remove("temp.c");
 }
 
 
