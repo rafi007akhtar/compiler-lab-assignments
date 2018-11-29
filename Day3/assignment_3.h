@@ -128,8 +128,93 @@ char* calToMal(char *str)
 }
 
 
-// Q6: Write a C program that will check whether the input string is containing “Monday” in it.
+// Q3: Write a C program which will take a C file as input and 
+//     find out the total memory space required for allocating 
+//     all the variables and check if it exceeds a certain limit
+//     (which is taken as user input).
+int varSize(char *filename)
+{
+    size_t len = 0;
+    char *line;
+    int result;
 
+    int pos;
+    char *type;
+    size_t size = 0;
+    int intCount, floatCount, longCount, doubleCount, charCount;
+    intCount = floatCount = longCount = doubleCount = charCount = 0;
+
+    FILE *f = fopen(filename, "r");
+
+    while(1)
+    {
+        result = getline(&line, &len, f);
+        if (result == -1) break;
+
+        pos = -1;
+        while(line[++pos])
+        {
+            type = allo;
+
+            if(pos + 3 < len)
+            {
+                memcpy(type, &line[pos], 3);
+                type[3] = '\0';
+                if (! strcmp("int", type))
+                intCount++;
+            }
+
+            if(pos + 4 < len)
+            {
+                memcpy(type, &line[pos], 4);
+                type[4] = '\0';
+                if (! strcmp("long", type))
+                    longCount++;
+                if (! strcmp("char", type))
+                    charCount++;
+            }
+            
+            if (pos + 5 < len)
+            {
+                memcpy(type, &line[pos], 5);
+                type[5] = '\0';
+                if (! strcmp("float", type))
+                    floatCount++;
+                if (! strcmp("double", type))
+                    doubleCount++;
+            }
+
+            if (pos + 6 < len)
+            {
+                memcpy(type, &line[pos], 6);
+                type[6] = '\0';
+                if (! strcmp("double", type))
+                    doubleCount++;
+            }
+
+            free(type);
+        }
+    }
+
+    fclose(f);
+
+    intCount--; // subtracting an int for int main
+
+    // printf("Ints: %d \nFloats: %d \nLongs: %d \nChars: %d \nDoubles: %d\n", intCount, floatCount, longCount, charCount, doubleCount);
+
+    int totalSize = (
+        (intCount*sizeof(int)) + 
+        (floatCount*sizeof(float)) + 
+        (charCount*sizeof(char)) +
+        (longCount*sizeof(long)) +
+        (doubleCount*sizeof(double)) 
+    );
+
+    return totalSize;
+}
+
+
+// Q6: Write a C program that will check whether the input string is containing “Monday” in it.
 bool hasMonday(char *str)
 {
 

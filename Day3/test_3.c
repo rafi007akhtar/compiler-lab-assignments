@@ -25,6 +25,13 @@ int main(void)
     
     printf("\n");
 
+
+    // TEST: varSize
+    int size = varSize("findSize.c");
+    printf("Size of variables in findSize.c = %d bytes\n", size);
+
+    printf("\n");
+
     // TEST: hasMonday
     char *test_cases_6[] = {
         "Monday - 1 Day",
