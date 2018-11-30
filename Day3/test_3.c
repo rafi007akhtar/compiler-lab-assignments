@@ -27,8 +27,13 @@ int main(void)
 
 
     // TEST: varSize
+    int userSize;
+    printf("Enter size of the datatypes in bytes: ");
+    scanf("%d", &userSize);
     int size = varSize("findSize.c");
     printf("Size of variables in findSize.c = %d bytes\n", size);
+    if (size > userSize)
+        printf("It exceeds the given size\n");
 
     printf("\n");
 
