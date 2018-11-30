@@ -32,6 +32,11 @@ int main(void)
 
     printf("\n");
 
+    // TEST: checkReturn
+    checkReturn("return_types.c");
+
+    printf("\n");
+
     // TEST: hasMonday
     char *test_cases_6[] = {
         "Monday - 1 Day",
@@ -51,7 +56,7 @@ int main(void)
     printf("\n");
 
     // TEST: initialize
-    initialize("initialize.c");
+    // initialize("initialize.c"); // TODO: Uncomment this line before pushing!
     printf("Variables in file initialize.c have been initialized\n");
 
     printf("\n");

@@ -9,9 +9,11 @@
 
 typedef enum boolean {false, true} bool;
 
-// Q1: Write a C program to check if another C file has the necessary prerequisites for executing a C program(such as #include<stdio.h>, int main(){},return 0;)
+// UTILITY FUNCTIONS
 char *removeSpaces(char *str)
 {
+    // Remove all spaces from a string
+
     char *trimmed = allo;
     int pos = -1;
     int trimI = 0;
@@ -24,6 +26,104 @@ char *removeSpaces(char *str)
     trimmed[trimI] = '\0';
     return trimmed;
 }
+int indexOf(char *str, char ch)
+{
+    // Return the first index of character `ch` in string `str`
+    // Return -1 if not found
+
+    int pos = -1;
+    while(str[++pos])
+    {
+        if (str[pos] == ch)
+            return pos;
+    }
+    return -1;
+}
+char *unindentLine(char *line)
+{
+    // Remove indentation (extra spaces in the prefix) of a line
+
+    char *unindented = allo;
+    int pos = -1;
+    int newPos = 0;
+    while(line[++pos])
+    {
+        if ((int) line[pos] != 32 || line[pos] != '\t')
+            unindented[newPos++] = line[pos];
+    }
+    return unindented;
+}
+bool typeCheck(char *val, char *datatype)
+{
+    // Returns true if `val` is a valid value for datatype `type`
+    // Returns false otherwise
+    // Does NOT check for void types
+
+    int pos;
+
+    if (!strcmp(datatype, "short") || !strcmp(datatype, "int") || !strcmp(datatype, "long"))
+    {
+        // check for all ints
+        pos = -1;
+        while(val[++pos])
+        {
+            // it can be expression with numbers, +, -, /, *, % and spaces only
+
+            if (val[pos] == '*' || val[pos] == '/' || val[pos] == '/' || val[pos] == '%')
+            {
+                // this cannot happen in the beginning
+                if (pos == 0)
+                    return false;
+                continue;
+            }
+            if (val[pos] != '+' && val[pos] != '-' && val[pos] && (int) val[pos]!=32
+                && !((int)val[pos] >= 48 && (int)val[pos] <= 57)
+                )
+                return false;
+        }
+        return true;
+    }
+    
+    if (!strcmp(datatype, "float") || !strcmp(datatype, "double"))
+    {
+        pos = -1;
+        while(val[++pos])
+        {
+            if (val[pos] == '.')
+            {
+                // periods can't appear at the end
+                if (val[pos+1] == '\0') return false;
+                continue;
+            }
+            if (val[pos] == '*' || val[pos] == '/' || val[pos] == '/' || val[pos] == '%')
+            {
+                // this cannot happen in the beginning
+                if (pos == 0)
+                    return false;
+                continue;
+            }
+            if (val[pos] != '+' && val[pos] != '-' && val[pos] && (int) val[pos]!=32
+                && !((int)val[pos] >= 48 && (int)val[pos] <= 57)
+                )
+                return false;
+        }
+        return true;
+    }
+
+    if (! strcmp(datatype, "char"))
+    {
+        // chars can be only one letter long, plus the surrounding quotes ''
+        if (val[0] != '\'' || val[2] != '\'' || val[3] != '\0') 
+            return false;
+        return true;
+    }
+
+    return false;
+}
+
+// ### Assignment questions begin from here ###
+
+// Q1: Write a C program to check if another C file has the necessary prerequisites for executing a C program(such as #include<stdio.h>, int main(){},return 0;)
 bool checkPrerequisites(char *filename)
 {
     FILE *f;
@@ -215,6 +315,92 @@ int varSize(char *filename)
 }
 
 
+// Q4: Write a C program that takes another C file as input and check if all the functions are having proper return types.
+void checkReturn(char *filename)
+{
+    char* line;
+    size_t len = 0;
+    int result;
+    char *type = "none so far";
+    char *temp;
+    int spaceIndex;
+
+    bool hasError = false;
+    
+    FILE *f = fopen(filename, "r");
+    int lineNumber = 0;
+    while(1)
+    {
+        result = getline(&line, &len, f);
+        if (result == -1) break;
+        lineNumber++;
+
+        // get the return type if this line is a function decl.
+        len = strlen(line);
+        if (line[len-2] == ')')
+        {        
+            type = allo;
+            spaceIndex = indexOf(line, (char)32);
+            memcpy(type, &line[0], spaceIndex);
+            type[spaceIndex] = '\0';
+
+            // you don't need anything else from this line, so move on to the next
+            continue;
+        }
+
+        // once you have the return type, check for the closest return statement
+        if (strcmp(type, "none so far"))
+        {
+            line = removeSpaces(line);
+            // a return statement would atleast need 6 characters
+            len = strlen(line);
+            if (len < 6) continue;
+            // printf("Line '%s' with length %ld will be processed\n", line, len);
+            
+            temp = allo;
+            memcpy(temp, &line[0], 6); // 'return' is 6 characters long
+            temp[6] = '\0';
+
+            // check if the statement is a return statement
+            if (! strcmp(temp, "return"))
+            {
+                if (! strcmp(type, "void"))
+                {
+                    hasError = true;
+                    printf("Error in line %d: return statement in void\n", lineNumber);
+                }
+
+                else // return statement in a non-void function
+                {
+                    // now get the return value
+                    temp = allo;
+                    int ind = indexOf(line, ';');
+                    memcpy(temp, &line[6], ind-6);
+                    temp[ind-6] = '\0';
+                    // printf("Return value: '%s' in type '%s'\n", temp, type);
+
+                    // now check if you have the proper value wrt the type
+                    if (! typeCheck(temp, type))
+                    {
+                        hasError = true;
+                        printf("Error in line %d: '%s' is not a valid return value for type '%s'\n", lineNumber, temp, type);
+                    }
+
+                    free(temp);
+                }
+
+                free(type);
+                type = "none so far";
+            }
+        }
+        
+    }
+    fclose(f);
+
+    if (! hasError) printf("There are not error in the return types of this file\n");
+}
+
+
 // Q6: Write a C program that will check whether the input string is containing “Monday” in it.
 bool hasMonday(char *str)
 {
@@ -331,5 +517,6 @@ void initialize(char *filename)
     // now delete temp
     remove("temp.c");
 }
+
 
 
