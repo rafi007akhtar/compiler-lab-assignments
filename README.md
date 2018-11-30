@@ -25,7 +25,7 @@ Assignments for CS793 (Compiler Design Lab)
 
 5. Run the executable.
 
-Steps 4 and 5 for each assignment are written in the READMEs of their respective versions.
+Steps 4 and 5 for each assignment are written in the READMEs in their respective folders.
 
 ## License
 [MIT License](https://github.com/rafi007akhtar/compiler-lab-assignments/blob/master/LICENSE)
