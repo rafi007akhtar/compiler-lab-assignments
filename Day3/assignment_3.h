@@ -51,6 +51,7 @@ char *unindentLine(char *line)
         if ((int) line[pos] != 32 || line[pos] != '\t')
             unindented[newPos++] = line[pos];
     }
+	unindented[newPos] = '\0';
     return unindented;
 }
 bool typeCheck(char *val, char *datatype)
@@ -120,6 +121,18 @@ bool typeCheck(char *val, char *datatype)
 
     return false;
 }
+bool in(char *word, char *list[], int len)
+{
+	// check if word exists in list
+	int i;
+	for (i = 0; i < len; i++)
+	{
+		if (! strcmp(list[i], word))
+			return true;
+	}
+	return false;
+}
+
 
 // ### Assignment questions begin from here ###
 
@@ -398,6 +411,65 @@ void checkReturn(char *filename)
     fclose(f);
 
     if (! hasError) printf("There are no errors in the return types of this file\n");
+}
+
+
+// Q5: Write a C program that should check if all the members of the \
+structures are having a defined data type. If not, print an error.
+void checkStruct(char *filename)
+{
+	// ASSUMPTION: The file contains only struct members
+	char *line;
+	size_t len = 0;
+	int lineNumber = 0;
+	int result;
+
+	char *first5;
+	char *types[] = {"int", "short", "float", "long", "double", "char"};
+	char *type;
+	int spaceIndex;
+
+	FILE *f = fopen(filename, "r");
+
+	while(1)
+	{
+		result = getline(&line, &len, f);
+		if (result == -1) break;
+		lineNumber++;
+
+		if (! strcmp(line, "\n"))
+			continue;
+
+		// skip for lines with "struct", "{", "}"
+		len = strlen(line);
+		if (len >= 6)
+		{
+			first5 = allo;
+			memcpy(first5, &line[0], 6);
+			first5[6] = '\0';
+			if (!strcmp("struct", first5) || !strcmp("typede", first5))
+				continue;
+			free(first5);
+		}
+
+		if (line[0] == '{' || line[0] == '}')
+			continue;
+
+		// assuming the rest are struct members, check if they have valid datatypes
+		spaceIndex = indexOf(line, (char)32);
+		line = removeSpaces(line);
+		type = allo;
+		memcpy(type, &line[0], spaceIndex-1);
+		type[spaceIndex-1] = '\0';
+
+		// printf("Type of this member: '%s'\n", type);
+		if (! in(type, types, 6))
+			printf("Error in line %d: %s is not a valid type \n", lineNumber, type);
+
+		free(type);
+	}
+
+	fclose(f);
 }
 
 

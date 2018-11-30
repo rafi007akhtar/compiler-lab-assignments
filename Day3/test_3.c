@@ -37,6 +37,11 @@ int main(void)
 
     printf("\n");
 
+    // TEST: checkStruct
+    checkStruct("structs.c");
+
+    printf("\n");
+
     // TEST: hasMonday
     char *test_cases_6[] = {
         "Monday - 1 Day",
