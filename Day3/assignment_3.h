@@ -397,7 +397,7 @@ void checkReturn(char *filename)
     }
     fclose(f);
 
-    if (! hasError) printf("There are not error in the return types of this file\n");
+    if (! hasError) printf("There are no errors in the return types of this file\n");
 }
 
 
