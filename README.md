@@ -5,6 +5,7 @@ Assignments for CS793 (Compiler Design Lab)
 - [Day1](https://github.com/rafi007akhtar/compiler-lab-assignments/tree/master/Day1)
 - [Day2](https://github.com/rafi007akhtar/compiler-lab-assignments/tree/master/Day2)
 - [Day3](https://github.com/rafi007akhtar/compiler-lab-assignments/tree/master/Day3)
+- [Day4](https://github.com/rafi007akhtar/compiler-lab-assignments/tree/master/Day4)
 
 ## Use
 1. Clone the repository
